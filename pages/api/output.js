@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     try {
 
         const lang = {
-            "English": "en-US",
+            "English": "en-au",
             "Chinese": "zh-SG",
             "Malay": "ms-MY",
         }
@@ -39,8 +39,6 @@ export default async function handler(req, res) {
 
         const out = autoCompleteResult.predictions[0].content;
 
-        console.log(out)
-
         if (!out){
             return res.status(200).json({ out: "Please speak again" });
         }
@@ -57,16 +55,19 @@ export default async function handler(req, res) {
             end = out.substring(colon+1)
         }
         // Convert text back to speech
+        const voice = {
+            languageCode: lang[language],
+            ...(language === 'English' ? { name: 'en-AU-Neural2-D' } : {})
+          };
         const ttsRequest = {
             input: { text: end },
-            voice: { languageCode: lang[language]},
+            voice: voice,
             audioConfig: { audioEncoding: 'MP3' },
         };
 
 
         const [ttsResponse] = await ttsClient.synthesizeSpeech(ttsRequest);
         const audioContent = ttsResponse.audioContent.toString('base64');
-        console.log(out)
         return res.status(200).json({ audioContent,out });
     } catch (error) {
         console.error(error);
