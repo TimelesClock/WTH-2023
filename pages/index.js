@@ -76,6 +76,7 @@ export default function Home() {
         <option value="Cantonese">Cantonese</option>
         <option value="Malay">Malay</option>
         <option value="Hindi">Hindi</option>
+        <option value="Tamil">Tamil</option>
       </select>
       <AudioRecorder
         onRecordingComplete={(blob) => addAudioElement(blob, inputRef, outputRef, language)}
