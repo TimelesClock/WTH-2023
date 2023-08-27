@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', background: 'dark' }}>
       <h1 className="text-3xl font-bold mb-5">Group: The Participant</h1>
-      <h1 className="text-3xl font-bold underline mb-5">Voice Powered Chatbot</h1>
+      <h1 className="text-3xl font-bold underline mb-5">Voice Powered Chatbot: ElderSpeak</h1>
       <select className="select w-1/4 mb-5" onChange={handleLanguageChange} value={language}>
         <option value="English">English</option>
         <option value="Chinese">Chinese</option>
