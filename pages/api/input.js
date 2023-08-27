@@ -12,6 +12,7 @@ export default async function handler(req, res) {
         "Cantonese":"yue-Hant-HK",
         "Malay": "ms-MY",
         "Hindi": "hi-IN",
+        "Tamil":"ta-SG",
     }
 
     const credential = {

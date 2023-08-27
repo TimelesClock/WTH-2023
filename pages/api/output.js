@@ -32,6 +32,7 @@ export default async function handler(req, res) {
             "Malay": "ms-MY",
             "Cantonese": "yue-HK",
             "Hindi": "hi-IN",
+            "Tamil": "ta-IN",
         }
 
         const text = req.body.text
@@ -67,7 +68,9 @@ export default async function handler(req, res) {
         const voice = {
             languageCode: lang[language],
             ...(language === 'English' ? { name: 'en-AU-Neural2-D' } : {}),
-            ...(language === 'Hindi' ? { name: 'hi-IN-Neural2-B' } : {})
+            ...(language === 'Hindi' ? { name: 'hi-IN-Neural2-B' } : {}),
+            ...(language === 'Tamil' ? { name: 'ta-IN-Wavenet-D' } : {}),
+            ...(language === 'Cantonese' ? { name: 'yue-HK-Standard-D' } : {}),
         };
         const ttsRequest = {
             input: { text: end },
