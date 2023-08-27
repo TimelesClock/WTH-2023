@@ -73,7 +73,9 @@ export default function Home() {
       <select className="select w-1/4 mb-5" onChange={handleLanguageChange} value={language}>
         <option value="English">English</option>
         <option value="Chinese">Chinese</option>
+        <option value="Cantonese">Cantonese</option>
         <option value="Malay">Malay</option>
+        <option value="Hindi">Hindi</option>
       </select>
       <AudioRecorder
         onRecordingComplete={(blob) => addAudioElement(blob, inputRef, outputRef, language)}

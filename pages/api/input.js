@@ -9,14 +9,21 @@ export default async function handler(req, res) {
     const lang = {
         "English": "en-US",
         "Chinese": "zh-SG",
+        "Cantonese":"yue-Hant-HK",
         "Malay": "ms-MY",
+        "Hindi": "hi-IN",
     }
 
-
+    const credential = {
+        client_id: process.env.CLIENT_ID,
+        client_email: process.env.CLIENT_EMAIL,
+        private_key: process.env.PRIVATE_KEY,
+        token_url: process.env.TOKEN_URI,
+    }
 
     const { audioData,language } = req.body;
 
-    const speechClient = new SpeechClient();
+    const speechClient = new SpeechClient({credentials:credential});
 
     // Convert speech to text using Google Cloud SDK
     const sttRequest = {

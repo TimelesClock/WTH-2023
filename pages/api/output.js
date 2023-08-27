@@ -15,7 +15,14 @@ export default async function handler(req, res) {
         conversationHistory = [];
         return res.status(200).json();
     }
-    const ttsClient = new TextToSpeechClient();
+    const credential = {
+        client_id: process.env.CLIENT_ID,
+        client_email: process.env.CLIENT_EMAIL,
+        private_key: process.env.PRIVATE_KEY,
+        token_url: process.env.TOKEN_URI,
+    }
+
+    const ttsClient = new TextToSpeechClient({credentials:credential});
 
     try {
 
@@ -23,42 +30,45 @@ export default async function handler(req, res) {
             "English": "en-au",
             "Chinese": "zh-SG",
             "Malay": "ms-MY",
+            "Cantonese": "yue-HK",
+            "Hindi": "hi-IN",
         }
 
         const text = req.body.text
         const language = req.body.language
 
-        if (!text){
+        if (!text) {
             return res.status(500).json({ audioContent: "Please speak again" });
         }
 
         // Auto-complete function
         const autoCompleteResult = await autoComplete(text);
 
-        conversationHistory.push({ role: 'user', content: text });
+        conversationHistory.push({ role: 'User', content: text });
 
         const out = autoCompleteResult.predictions[0].content;
 
-        if (!out){
+        if (!out) {
             return res.status(200).json({ out: "Please speak again" });
         }
 
-        if (out.indexOf("\\n") !== -1){
+        if (out.indexOf("\\n") !== -1) {
             return res.status(200).json({ out: "Please speak again" });
         }
 
-        conversationHistory.push({ role: 'bot', content: out});
+        conversationHistory.push({ role: 'ElderSpeak', content: out });
 
         let colon = out.indexOf(":")
         var end = out
-        if (colon !== -1){
-            end = out.substring(colon+1)
+        if (colon !== -1) {
+            end = out.substring(colon + 1)
         }
         // Convert text back to speech
         const voice = {
             languageCode: lang[language],
-            ...(language === 'English' ? { name: 'en-AU-Neural2-D' } : {})
-          };
+            ...(language === 'English' ? { name: 'en-AU-Neural2-D' } : {}),
+            ...(language === 'Hindi' ? { name: 'hi-IN-Neural2-B' } : {})
+        };
         const ttsRequest = {
             input: { text: end },
             voice: voice,
@@ -68,7 +78,7 @@ export default async function handler(req, res) {
 
         const [ttsResponse] = await ttsClient.synthesizeSpeech(ttsRequest);
         const audioContent = ttsResponse.audioContent.toString('base64');
-        return res.status(200).json({ audioContent,out });
+        return res.status(200).json({ audioContent, out });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Failed to process audio' });
@@ -78,9 +88,14 @@ export default async function handler(req, res) {
 const autoComplete = async (
     text,
 ) => {
-
     const auth = new GoogleAuth({
-        keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+        keyFile: "src/google-key.json",
+        credentials: {
+            client_id: process.env.CLIENT_ID,
+            client_email: process.env.CLIENT_EMAIL,
+            private_key: process.env.PRIVATE_KEY,
+            token_url: process.env.TOKEN_URI,
+        },
         scopes: "https://www.googleapis.com/auth/cloud-platform",
     });
     const token = await auth.getAccessToken();
@@ -96,7 +111,7 @@ const autoComplete = async (
         instances: [
             {
                 prompt: `
-        Context: You are a chatbot for an elderly individual who wants to engage in a friendly and respectful conversation. 
+        Context: You are a chatbot named ElderSpeak for an elderly individual who wants to engage in a friendly and respectful conversation. 
         Please guide the person through various topics like today's technology, nostalgia, health, and anything else that could be interesting and informative for someone of old age. 
         Keep the chat simple and straightforward, avoiding jargon or complicated explanations.Keep in mind that the prompts might be jumbled up and not make sense as the elderly might have speech impairment, so you will need to guess the prompt based on similar sounding words.
         Try to end every sentence with a relevant cheerful message. Thank you!
