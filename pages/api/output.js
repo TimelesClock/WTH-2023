@@ -71,6 +71,7 @@ export default async function handler(req, res) {
             ...(language === 'Hindi' ? { name: 'hi-IN-Neural2-B' } : {}),
             ...(language === 'Tamil' ? { name: 'ta-IN-Wavenet-D' } : {}),
             ...(language === 'Cantonese' ? { name: 'yue-HK-Standard-D' } : {}),
+            ...(language === 'Chinese' ? { name: 'cmn-TW-Wavenet-B' } : {}),
         };
         const ttsRequest = {
             input: { text: end },
