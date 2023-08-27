@@ -1,8 +1,57 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
 
 ## Getting Started
 
-First, run the development server:
+Install Pre-requisite libraries
+
+```bash
+npm i
+```
+
+Environmental Variables
+
+```env
+BASE_URL="https://localhost:3000"
+
+
+# Project ID
+PROJECT_ID=
+
+# Private Key ID
+PRIVATE_KEY_ID=
+
+# Private Key 
+PRIVATE_KEY=
+
+# Client Email
+CLIENT_EMAIL=
+
+# Client ID
+CLIENT_ID=
+
+# Auth URI
+AUTH_URI=
+
+# Token URI
+TOKEN_URI=
+
+# Auth Provider x509 Cert URL
+AUTH_PROVIDER_X509_CERT_URL=
+
+# Client x509 Cert URL
+CLIENT_X509_CERT_URL=
+
+# Universe Domain
+UNIVERSE_DOMAIN=
+```
+Place Google api credentials in an env file with the above keys
+Ensure that the following services are enabled
+
+Google Text To Speech
+Google Speech To TExt
+Google Vertex AI
+
+Run the development server:
 
 ```bash
 npm run dev
